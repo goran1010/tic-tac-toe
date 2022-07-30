@@ -48,12 +48,8 @@ body {
   padding: 0.5rem;
   background-color: lightgreen;
   border-radius: 5px;
-}
-.stop-button {
-  border: 2px solid red;
-  padding: 0.5rem;
-  background-color: lightcoral;
-  border-radius: 5px;
+  user-select: none;
+  font-weight: bold;
 }
 .new-button:active {
   border: 2px solid yellow;
@@ -71,4 +67,7 @@ body {
   font-weight: bold;
   color: green;
   font-size: 1.5rem;
+}
+label {
+  font-weight: bold;
 }
