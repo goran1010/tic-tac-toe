@@ -24,7 +24,7 @@ const game = (function () {
 
   function checkWinner() {
     if (
-      (gameBoard.board[0], gameBoard.board[1], gameBoard.board[2]) != `` &&
+      gameBoard.board[0] != `` &&
       gameBoard.board[0] == gameBoard.board[1] &&
       gameBoard.board[1] == gameBoard.board[2]
     ) {
@@ -32,7 +32,7 @@ const game = (function () {
       return playerTwo.name;
     }
     if (
-      (gameBoard.board[3], gameBoard.board[4], gameBoard.board[5]) != `` &&
+      gameBoard.board[3] != `` &&
       gameBoard.board[3] == gameBoard.board[4] &&
       gameBoard.board[4] == gameBoard.board[5]
     ) {
@@ -40,7 +40,7 @@ const game = (function () {
       return playerTwo.name;
     }
     if (
-      (gameBoard.board[6], gameBoard.board[7], gameBoard.board[8]) != `` &&
+      gameBoard.board[6] != `` &&
       gameBoard.board[6] == gameBoard.board[7] &&
       gameBoard.board[7] == gameBoard.board[8]
     ) {
@@ -48,7 +48,7 @@ const game = (function () {
       return playerTwo.name;
     }
     if (
-      (gameBoard.board[0], gameBoard.board[3], gameBoard.board[6]) != `` &&
+      gameBoard.board[0] != `` &&
       gameBoard.board[0] == gameBoard.board[3] &&
       gameBoard.board[3] == gameBoard.board[6]
     ) {
@@ -56,7 +56,7 @@ const game = (function () {
       return playerTwo.name;
     }
     if (
-      (gameBoard.board[1], gameBoard.board[4], gameBoard.board[7]) != `` &&
+      gameBoard.board[1] != `` &&
       gameBoard.board[1] == gameBoard.board[4] &&
       gameBoard.board[4] == gameBoard.board[7]
     ) {
@@ -64,7 +64,7 @@ const game = (function () {
       return playerTwo.name;
     }
     if (
-      (gameBoard.board[2], gameBoard.board[5], gameBoard.board[8]) != `` &&
+      gameBoard.board[2] != `` &&
       gameBoard.board[2] == gameBoard.board[5] &&
       gameBoard.board[5] == gameBoard.board[8]
     ) {
@@ -72,7 +72,7 @@ const game = (function () {
       return playerTwo.name;
     }
     if (
-      (gameBoard.board[0], gameBoard.board[4], gameBoard.board[8]) != `` &&
+      gameBoard.board[0] != `` &&
       gameBoard.board[0] == gameBoard.board[4] &&
       gameBoard.board[4] == gameBoard.board[8]
     ) {
@@ -80,7 +80,7 @@ const game = (function () {
       return playerTwo.name;
     }
     if (
-      (gameBoard.board[2], gameBoard.board[4], gameBoard.board[6]) != `` &&
+      gameBoard.board[2] != `` &&
       gameBoard.board[2] == gameBoard.board[4] &&
       gameBoard.board[4] == gameBoard.board[6]
     ) {
@@ -105,7 +105,7 @@ const game = (function () {
     gameBoard.board = [``, ``, ``, ``, ``, ``, ``, ``, ``];
     display();
     currentPlayer = playerOne;
-    gameBoard.winner.textContent = "Ko ce pobediti?";
+    gameBoard.winner.textContent = "Ko ce pobijediti?";
     gameBoard.square.forEach((element, index) => {
       element.classList.add(`${index}`);
       element.addEventListener(`click`, () => {
@@ -114,12 +114,14 @@ const game = (function () {
         if (checkFullBoard()) return;
         gameBoard.board[`${element.className}`] = currentPlayer.sign;
         display();
-
+        console.log(checkWinner());
         if (checkWinner()) {
           gameBoard.winner.textContent = `Pobjednik je ${checkWinner()}`;
+          return;
         }
         if (checkFullBoard()) {
-          gameBoard.winner.textContent = `Nereseno`;
+          gameBoard.winner.textContent = `Nerijeseno`;
+          return;
         }
         changePlayer();
       });
