@@ -4,27 +4,23 @@
   box-sizing: border-box;
 }
 body {
-  min-height: 100vh;
   display: flex;
   align-items: center;
   flex-direction: column;
-  max-width: 100%;
   gap: 1rem;
-  padding: 1rem;
+  padding: 0.5rem;
 }
 .container {
-  width: 480px;
-  height: 480px;
+  flex: 1;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
-  justify-content: center;
-  justify-items: center;
-  align-items: center;
-  align-content: center;
+  min-width: 400px;
+  min-height: 400px;
   gap: 1rem;
   background-color: black;
   user-select: none;
+  align-self: center;
 }
 .square {
   background-color: white;
@@ -115,4 +111,9 @@ input {
 }
 span {
   font-size: 2rem;
+}
+@media only screen and (max-width: 600px) {
+  .player-buttons {
+    flex-direction: column;
+  }
 }
