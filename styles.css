@@ -1,5 +1,3 @@
-/* Make Xs and Os 100% of div*/
-
 * {
   margin: 0;
   padding: 0;
@@ -42,10 +40,29 @@ body {
 .player-one,
 .player-two {
   font-size: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3rem;
+}
+.swap-players {
+  border: 2px solid rgb(119, 128, 0);
+  padding: 0.5rem;
+  background-color: rgb(221, 238, 144);
+  border-radius: 5px;
+  user-select: none;
+  font-weight: bold;
+  text-align: center;
+}
+.swap-players:active {
+  border: 2px solid yellow;
+  transform: scale(1.1);
 }
 .player-buttons {
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 100%;
   gap: 0.5rem;
 }
@@ -58,7 +75,8 @@ body {
   user-select: none;
   font-weight: bold;
 }
-.new-button:active {
+.new-button:active,
+.new-ai-button:active {
   border: 2px solid yellow;
   transform: scale(1.1);
 }
@@ -77,6 +95,9 @@ body {
 }
 label {
   font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 input {
   border: 2px solid blue;
@@ -86,4 +107,7 @@ input {
 }
 .winning-square {
   background-color: lightgreen;
+}
+span {
+  font-size: 2rem;
 }

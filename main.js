@@ -6,6 +6,21 @@ const game = (function () {
     return { board, square, winner };
   })();
 
+  function gameStart() {
+    gameBoard.square.forEach((element, index) => {
+      element.dataset.squareID = `${index}`;
+      element.addEventListener(`click`, playerClick);
+    });
+
+    gameBoard.square.forEach((element) => {
+      element.classList.remove(`winning-square`);
+    });
+    gameBoard.board = [``, ``, ``, ``, ``, ``, ``, ``, ``];
+    display();
+    currentPlayer = playerOne;
+    gameBoard.winner.textContent = `${currentPlayer.name}'s Turn to Play`;
+  }
+
   function display() {
     gameBoard.square.forEach((element, index) => {
       element.textContent = gameBoard.board[index];
@@ -122,8 +137,31 @@ const game = (function () {
     return true;
   }
 
+  const swapPlayersButton = document.querySelector(`.swap-players`);
+  swapPlayersButton.addEventListener(`click`, () => {
+    let tempNameOne = playerOne.name;
+    let tempInputNameOne = playerOneName.value;
+
+    playerOneName.value = playerTwoName.value;
+    playerOne.name = playerTwo.name;
+
+    playerTwoName.value = tempInputNameOne;
+    playerTwo.name = tempNameOne;
+
+    newTwoPlayerGame();
+  });
+
+  let playerOneName = document.querySelector(`.player-one>input`);
+  let playerTwoName = document.querySelector(`.player-two>input`);
+
+  let playerOne = playerFactory(playerOneName.value, "X");
+  let playerTwo = playerFactory(playerTwoName.value, "O");
+
   const newTwoPlayerGameButton = document.querySelector(`.new-button`);
   newTwoPlayerGameButton.addEventListener(`click`, newTwoPlayerGame);
+
+  const newPlayerVsAIGameButton = document.querySelector(`.new-ai-button`);
+  newPlayerVsAIGameButton.addEventListener(`click`, newPlayerVsAIGame);
 
   function playerClick(element) {
     if (gameBoard.board[`${element.target.dataset.squareID}`]) return;
@@ -131,6 +169,7 @@ const game = (function () {
     if (checkFullBoard()) return;
     gameBoard.board[`${element.target.dataset.squareID}`] = currentPlayer.sign;
     display();
+
     if (checkWinner()) {
       gameBoard.winner.textContent = `The Winner is: ${checkWinner()}`;
       return;
@@ -140,6 +179,7 @@ const game = (function () {
       return;
     }
     changePlayer();
+    gameBoard.winner.textContent = `${currentPlayer.name}'s Turn to Play`;
   }
 
   function newTwoPlayerGame() {
@@ -149,18 +189,18 @@ const game = (function () {
     gameBoard.board = [``, ``, ``, ``, ``, ``, ``, ``, ``];
     display();
     currentPlayer = playerOne;
-    gameBoard.winner.textContent = "Who will win ?";
-    gameBoard.square.forEach((element, index) => {
-      element.dataset.squareID = `${index}`;
-      element.addEventListener(`click`, playerClick);
-    });
+    gameBoard.winner.textContent = `${currentPlayer.name}'s Turn to Play`;
   }
 
-  const playerOneName = document.querySelector(`.player-one>input`);
-  const playerTwoName = document.querySelector(`.player-two>input`);
+  function newPlayerVsAIGame() {
+    gameBoard.square.forEach((element) => {
+      element.classList.remove(`winning-square`);
+    });
+    gameBoard.board = [``, ``, ``, ``, ``, ``, ``, ``, ``];
+    display();
+    currentPlayer = playerOne;
+    gameBoard.winner.textContent = `${currentPlayer.name}'s Turn to Play`;
+  }
 
-  const playerOne = playerFactory(playerOneName.value, "X");
-  const playerTwo = playerFactory(playerTwoName.value, "O");
-
-  newTwoPlayerGame();
+  gameStart();
 })();
