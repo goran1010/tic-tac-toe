@@ -1,4 +1,4 @@
-/* Center the Xs and Os inside their divs */
+/* Make Xs and Os 100% of div*/
 
 * {
   margin: 0;
@@ -15,8 +15,8 @@ body {
   padding: 1rem;
 }
 .container {
-  width: 400px;
-  height: 400px;
+  width: 480px;
+  height: 480px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
@@ -26,8 +26,9 @@ body {
   align-content: center;
   gap: 1rem;
   background-color: black;
+  user-select: none;
 }
-.container > div {
+.square {
   background-color: white;
   width: 100%;
   height: 100%;
@@ -36,6 +37,7 @@ body {
   justify-content: center;
   justify-items: center;
   align-content: center;
+  align-items: center;
 }
 .player-one,
 .player-two {
@@ -47,7 +49,8 @@ body {
   width: 100%;
   gap: 0.5rem;
 }
-.new-button {
+.new-button,
+.new-ai-button {
   border: 2px solid green;
   padding: 0.5rem;
   background-color: lightgreen;
@@ -80,4 +83,7 @@ input {
   border-radius: 3px;
   outline: none;
   background-color: rgb(235, 231, 231);
+}
+.winning-square {
+  background-color: lightgreen;
 }

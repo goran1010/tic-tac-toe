@@ -1,11 +1,11 @@
-const gameBoard = (() => {
-  const square = Array.from(document.querySelectorAll(`.container>div`));
-  const winner = document.querySelector(`.winner`);
-  const board = [``, ``, ``, ``, ``, ``, ``, ``, ``];
-  return { board, square, winner };
-})();
-
 const game = (function () {
+  const gameBoard = (() => {
+    const square = Array.from(document.querySelectorAll(`.square`));
+    const winner = document.querySelector(`.winner`);
+    const board = [``, ``, ``, ``, ``, ``, ``, ``, ``];
+    return { board, square, winner };
+  })();
+
   function display() {
     gameBoard.square.forEach((element, index) => {
       element.textContent = gameBoard.board[index];
@@ -28,6 +28,9 @@ const game = (function () {
       gameBoard.board[0] == gameBoard.board[1] &&
       gameBoard.board[1] == gameBoard.board[2]
     ) {
+      gameBoard.square[0].classList.add(`winning-square`);
+      gameBoard.square[1].classList.add(`winning-square`);
+      gameBoard.square[2].classList.add(`winning-square`);
       if (gameBoard.board[0] == playerOne.sign) return playerOne.name;
       return playerTwo.name;
     }
@@ -36,6 +39,9 @@ const game = (function () {
       gameBoard.board[3] == gameBoard.board[4] &&
       gameBoard.board[4] == gameBoard.board[5]
     ) {
+      gameBoard.square[3].classList.add(`winning-square`);
+      gameBoard.square[4].classList.add(`winning-square`);
+      gameBoard.square[5].classList.add(`winning-square`);
       if (gameBoard.board[3] == playerOne.sign) return playerOne.name;
       return playerTwo.name;
     }
@@ -44,6 +50,9 @@ const game = (function () {
       gameBoard.board[6] == gameBoard.board[7] &&
       gameBoard.board[7] == gameBoard.board[8]
     ) {
+      gameBoard.square[6].classList.add(`winning-square`);
+      gameBoard.square[7].classList.add(`winning-square`);
+      gameBoard.square[8].classList.add(`winning-square`);
       if (gameBoard.board[6] == playerOne.sign) return playerOne.name;
       return playerTwo.name;
     }
@@ -52,6 +61,9 @@ const game = (function () {
       gameBoard.board[0] == gameBoard.board[3] &&
       gameBoard.board[3] == gameBoard.board[6]
     ) {
+      gameBoard.square[0].classList.add(`winning-square`);
+      gameBoard.square[3].classList.add(`winning-square`);
+      gameBoard.square[6].classList.add(`winning-square`);
       if (gameBoard.board[0] == playerOne.sign) return playerOne.name;
       return playerTwo.name;
     }
@@ -60,6 +72,9 @@ const game = (function () {
       gameBoard.board[1] == gameBoard.board[4] &&
       gameBoard.board[4] == gameBoard.board[7]
     ) {
+      gameBoard.square[1].classList.add(`winning-square`);
+      gameBoard.square[4].classList.add(`winning-square`);
+      gameBoard.square[7].classList.add(`winning-square`);
       if (gameBoard.board[1] == playerOne.sign) return playerOne.name;
       return playerTwo.name;
     }
@@ -68,6 +83,9 @@ const game = (function () {
       gameBoard.board[2] == gameBoard.board[5] &&
       gameBoard.board[5] == gameBoard.board[8]
     ) {
+      gameBoard.square[2].classList.add(`winning-square`);
+      gameBoard.square[5].classList.add(`winning-square`);
+      gameBoard.square[8].classList.add(`winning-square`);
       if (gameBoard.board[2] == playerOne.sign) return playerOne.name;
       return playerTwo.name;
     }
@@ -76,6 +94,9 @@ const game = (function () {
       gameBoard.board[0] == gameBoard.board[4] &&
       gameBoard.board[4] == gameBoard.board[8]
     ) {
+      gameBoard.square[0].classList.add(`winning-square`);
+      gameBoard.square[4].classList.add(`winning-square`);
+      gameBoard.square[8].classList.add(`winning-square`);
       if (gameBoard.board[0] == playerOne.sign) return playerOne.name;
       return playerTwo.name;
     }
@@ -84,6 +105,9 @@ const game = (function () {
       gameBoard.board[2] == gameBoard.board[4] &&
       gameBoard.board[4] == gameBoard.board[6]
     ) {
+      gameBoard.square[2].classList.add(`winning-square`);
+      gameBoard.square[4].classList.add(`winning-square`);
+      gameBoard.square[6].classList.add(`winning-square`);
       if (gameBoard.board[2] == playerOne.sign) return playerOne.name;
       return playerTwo.name;
     }
@@ -98,33 +122,37 @@ const game = (function () {
     return true;
   }
 
-  const newGameButton = document.querySelector(`.new-button`);
-  newGameButton.addEventListener(`click`, newGame);
+  const newTwoPlayerGameButton = document.querySelector(`.new-button`);
+  newTwoPlayerGameButton.addEventListener(`click`, newTwoPlayerGame);
 
-  function newGame() {
+  function playerClick(element) {
+    if (gameBoard.board[`${element.target.dataset.squareID}`]) return;
+    if (checkWinner()) return;
+    if (checkFullBoard()) return;
+    gameBoard.board[`${element.target.dataset.squareID}`] = currentPlayer.sign;
+    display();
+    if (checkWinner()) {
+      gameBoard.winner.textContent = `The Winner is: ${checkWinner()}`;
+      return;
+    }
+    if (checkFullBoard()) {
+      gameBoard.winner.textContent = `It's a draw !`;
+      return;
+    }
+    changePlayer();
+  }
+
+  function newTwoPlayerGame() {
+    gameBoard.square.forEach((element) => {
+      element.classList.remove(`winning-square`);
+    });
     gameBoard.board = [``, ``, ``, ``, ``, ``, ``, ``, ``];
     display();
     currentPlayer = playerOne;
-    gameBoard.winner.textContent = "Ko ce pobijediti?";
+    gameBoard.winner.textContent = "Who will win ?";
     gameBoard.square.forEach((element, index) => {
-      element.classList.add(`${index}`);
-      element.addEventListener(`click`, () => {
-        if (gameBoard.board[`${element.className}`]) return;
-        if (checkWinner()) return;
-        if (checkFullBoard()) return;
-        gameBoard.board[`${element.className}`] = currentPlayer.sign;
-        display();
-        console.log(checkWinner());
-        if (checkWinner()) {
-          gameBoard.winner.textContent = `Pobjednik je ${checkWinner()}`;
-          return;
-        }
-        if (checkFullBoard()) {
-          gameBoard.winner.textContent = `Nerijeseno`;
-          return;
-        }
-        changePlayer();
-      });
+      element.dataset.squareID = `${index}`;
+      element.addEventListener(`click`, playerClick);
     });
   }
 
@@ -134,5 +162,5 @@ const game = (function () {
   const playerOne = playerFactory(playerOneName.value, "X");
   const playerTwo = playerFactory(playerTwoName.value, "O");
 
-  newGame();
+  newTwoPlayerGame();
 })();
