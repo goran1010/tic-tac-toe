@@ -12,19 +12,30 @@ const game = (function () {
       element.addEventListener(`click`, playerClick);
     });
 
+    const nameChangeListener = Array.from(document.querySelectorAll(`input`));
+    nameChangeListener.forEach((element) => {
+      element.addEventListener(`keyup`, () => {
+        updateNames();
+        display(currentPlayer);
+      });
+    });
+
     gameBoard.square.forEach((element) => {
       element.classList.remove(`winning-square`);
     });
     gameBoard.board = [``, ``, ``, ``, ``, ``, ``, ``, ``];
-    display();
+
+    updateNames();
     currentPlayer = playerOne;
-    gameBoard.winner.textContent = `${currentPlayer.name}'s Turn to Play`;
+    display(currentPlayer);
   }
 
-  function display() {
+  function display(currentPlayer) {
     gameBoard.square.forEach((element, index) => {
       element.textContent = gameBoard.board[index];
     });
+
+    gameBoard.winner.textContent = `${currentPlayer.name}'s Turn to Play`;
   }
 
   const playerFactory = (name, sign) => {
@@ -139,15 +150,9 @@ const game = (function () {
 
   const swapPlayersButton = document.querySelector(`.swap-players`);
   swapPlayersButton.addEventListener(`click`, () => {
-    let tempNameOne = playerOne.name;
     let tempInputNameOne = playerOneName.value;
-
     playerOneName.value = playerTwoName.value;
-    playerOne.name = playerTwo.name;
-
     playerTwoName.value = tempInputNameOne;
-    playerTwo.name = tempNameOne;
-
     newTwoPlayerGame();
   });
 
@@ -168,7 +173,7 @@ const game = (function () {
     if (checkWinner()) return;
     if (checkFullBoard()) return;
     gameBoard.board[`${element.target.dataset.squareID}`] = currentPlayer.sign;
-    display();
+    display(currentPlayer);
 
     if (checkWinner()) {
       gameBoard.winner.textContent = `The Winner is: ${checkWinner()}`;
@@ -179,27 +184,37 @@ const game = (function () {
       return;
     }
     changePlayer();
-    gameBoard.winner.textContent = `${currentPlayer.name}'s Turn to Play`;
+    display(currentPlayer);
+  }
+
+  function updateNames() {
+    if (playerOneName.value) playerOne.name = playerOneName.value;
+    else playerOne.name = "Player One";
+
+    if (playerTwoName.value) playerTwo.name = playerTwoName.value;
+    else playerTwo.name = "Player Two";
   }
 
   function newTwoPlayerGame() {
+    updateNames();
     gameBoard.square.forEach((element) => {
       element.classList.remove(`winning-square`);
     });
     gameBoard.board = [``, ``, ``, ``, ``, ``, ``, ``, ``];
-    display();
+
     currentPlayer = playerOne;
-    gameBoard.winner.textContent = `${currentPlayer.name}'s Turn to Play`;
+    display(currentPlayer);
   }
 
   function newPlayerVsAIGame() {
+    updateNames();
     gameBoard.square.forEach((element) => {
       element.classList.remove(`winning-square`);
     });
     gameBoard.board = [``, ``, ``, ``, ``, ``, ``, ``, ``];
-    display();
+
     currentPlayer = playerOne;
-    gameBoard.winner.textContent = `${currentPlayer.name}'s Turn to Play`;
+    display(currentPlayer);
   }
 
   gameStart();
