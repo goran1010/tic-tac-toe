@@ -1,4 +1,4 @@
-const game = (function () {
+const TicTacToe = (function () {
   const gameBoard = (() => {
     const square = Array.from(document.querySelectorAll(`.square`));
     const winner = document.querySelector(`.winner`);
@@ -15,8 +15,8 @@ const game = (function () {
     const nameChangeListener = Array.from(document.querySelectorAll(`input`));
     nameChangeListener.forEach((element) => {
       element.addEventListener(`keyup`, () => {
-        updateNames();
-        display(currentPlayer);
+        displayNames();
+        displayBoard(currentPlayer);
       });
     });
 
@@ -25,12 +25,51 @@ const game = (function () {
     });
     gameBoard.board = [``, ``, ``, ``, ``, ``, ``, ``, ``];
 
-    updateNames();
+    displayNames();
     currentPlayer = playerOne;
-    display(currentPlayer);
+    displayBoard(currentPlayer);
+
+    playerOneName.dataset.AI = "NotAI";
+    playerTwoName.dataset.AI = "NotAI";
   }
 
-  function display(currentPlayer) {
+  function getAIChoice() {
+    if (checkWinner()) return;
+    if (checkFullBoard()) return;
+
+    let emptyBoard = [];
+
+    gameBoard.board.forEach((element, index) => {
+      if (element === ``) {
+        emptyBoard.push(index);
+      }
+    });
+
+    function AIChoiceIndex(emptyBoard) {
+      return emptyBoard[Math.floor(Math.random() * emptyBoard.length)];
+    }
+
+    if (playerOneName.dataset.AI == `IsAI`) {
+      gameBoard.board[AIChoiceIndex(emptyBoard)] = `X`;
+    } else {
+      gameBoard.board[AIChoiceIndex(emptyBoard)] = `O`;
+    }
+
+    displayBoard(currentPlayer);
+
+    if (checkWinner()) {
+      gameBoard.winner.textContent = `The Winner is: ${checkWinner()}`;
+      return;
+    }
+    if (checkFullBoard()) {
+      gameBoard.winner.textContent = `It's a draw !`;
+      return;
+    }
+    changePlayer();
+    displayBoard(currentPlayer);
+  }
+
+  function displayBoard(currentPlayer) {
     gameBoard.square.forEach((element, index) => {
       element.textContent = gameBoard.board[index];
     });
@@ -153,7 +192,28 @@ const game = (function () {
     let tempInputNameOne = playerOneName.value;
     playerOneName.value = playerTwoName.value;
     playerTwoName.value = tempInputNameOne;
-    newTwoPlayerGame();
+
+    if (playerOneName.dataset.AI === "IsAI") {
+      playerTwoName.dataset.AI = "IsAI";
+      playerOneName.dataset.AI = "NotAI";
+    } else if (playerTwoName.dataset.AI === "IsAI") {
+      playerTwoName.dataset.AI = "NotAI";
+      playerOneName.dataset.AI = "IsAI";
+    }
+
+    displayNames();
+
+    gameBoard.square.forEach((element) => {
+      element.classList.remove(`winning-square`);
+    });
+    gameBoard.board = [``, ``, ``, ``, ``, ``, ``, ``, ``];
+
+    if (playerOneName.dataset.AI === "IsAI") {
+      getAIChoice();
+    } else {
+      currentPlayer = playerOne;
+      displayBoard(currentPlayer);
+    }
   });
 
   let playerOneName = document.querySelector(`.player-one>input`);
@@ -172,8 +232,24 @@ const game = (function () {
     if (gameBoard.board[`${element.target.dataset.squareID}`]) return;
     if (checkWinner()) return;
     if (checkFullBoard()) return;
+
+    if (playerOneName.dataset.AI == "IsAI") {
+      currentPlayer.sign = "O";
+    }
+    if (playerTwoName.dataset.AI == "IsAI") {
+      currentPlayer.sign = "X";
+    }
+
     gameBoard.board[`${element.target.dataset.squareID}`] = currentPlayer.sign;
-    display(currentPlayer);
+
+    if (
+      playerOneName.dataset.AI === "IsAI" ||
+      playerTwoName.dataset.AI === "IsAI"
+    ) {
+      setTimeout(getAIChoice, Math.random() * 300 + 50);
+    }
+
+    displayBoard(currentPlayer);
 
     if (checkWinner()) {
       gameBoard.winner.textContent = `The Winner is: ${checkWinner()}`;
@@ -184,10 +260,10 @@ const game = (function () {
       return;
     }
     changePlayer();
-    display(currentPlayer);
+    displayBoard(currentPlayer);
   }
 
-  function updateNames() {
+  function displayNames() {
     if (playerOneName.value) playerOne.name = playerOneName.value;
     else playerOne.name = "Player One";
 
@@ -196,25 +272,51 @@ const game = (function () {
   }
 
   function newTwoPlayerGame() {
-    updateNames();
+    if (playerOneName.dataset.AI === "IsAI") {
+      playerOneName.value = ``;
+    }
+    if (playerTwoName.dataset.AI === "IsAI") {
+      playerTwoName.value = ``;
+    }
+
+    playerOneName.dataset.AI = "NotAI";
+    playerTwoName.dataset.AI = "NotAI";
+
+    displayNames();
     gameBoard.square.forEach((element) => {
       element.classList.remove(`winning-square`);
     });
     gameBoard.board = [``, ``, ``, ``, ``, ``, ``, ``, ``];
 
     currentPlayer = playerOne;
-    display(currentPlayer);
+    currentPlayer.sign = "X";
+
+    displayBoard(currentPlayer);
   }
 
   function newPlayerVsAIGame() {
-    updateNames();
+    if (
+      playerOneName.dataset.AI == "NotAI" &&
+      playerTwoName.dataset.AI == "NotAI"
+    ) {
+      playerTwoName.value = "AI Player";
+      playerTwoName.dataset.AI = "IsAI";
+    }
+
+    displayNames();
     gameBoard.square.forEach((element) => {
       element.classList.remove(`winning-square`);
     });
     gameBoard.board = [``, ``, ``, ``, ``, ``, ``, ``, ``];
 
-    currentPlayer = playerOne;
-    display(currentPlayer);
+    if (playerOneName.dataset.AI === "IsAI") {
+      getAIChoice();
+
+      currentPlayer = playerTwo;
+    } else {
+      currentPlayer = playerOne;
+    }
+    displayBoard(currentPlayer);
   }
 
   gameStart();

@@ -29,7 +29,6 @@ body {
   font-size: 6rem;
   display: flex;
   justify-content: center;
-  justify-items: center;
   align-content: center;
   align-items: center;
 }
@@ -99,6 +98,9 @@ label {
   align-items: center;
   align-content: center;
   gap: 0.5rem;
+  display: flex;
+  align-items: center;
+  align-content: center;
 }
 input {
   border: 2px solid blue;
@@ -115,5 +117,12 @@ span {
 @media only screen and (max-width: 600px) {
   .player-buttons {
     flex-direction: column;
+  }
+  .container,
+  body {
+    gap: 0.5rem;
+  }
+  .player-buttons {
+    gap: 0.2rem;
   }
 }
