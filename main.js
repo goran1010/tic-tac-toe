@@ -186,8 +186,35 @@ const TicTacToe = (function () {
     if (hasEmpty) return false;
     return true;
   }
-
   const swapPlayersButton = document.querySelector(`.swap-players`);
+  swapPlayersButton.addEventListener(`touchend`, () => {
+    let tempInputNameOne = playerOneName.value;
+    playerOneName.value = playerTwoName.value;
+    playerTwoName.value = tempInputNameOne;
+
+    if (playerOneName.dataset.AI === "IsAI") {
+      playerTwoName.dataset.AI = "IsAI";
+      playerOneName.dataset.AI = "NotAI";
+    } else if (playerTwoName.dataset.AI === "IsAI") {
+      playerTwoName.dataset.AI = "NotAI";
+      playerOneName.dataset.AI = "IsAI";
+    }
+
+    displayNames();
+
+    gameBoard.square.forEach((element) => {
+      element.classList.remove(`winning-square`);
+    });
+    gameBoard.board = [``, ``, ``, ``, ``, ``, ``, ``, ``];
+
+    if (playerOneName.dataset.AI === "IsAI") {
+      getAIChoice();
+    } else {
+      currentPlayer = playerOne;
+      displayBoard(currentPlayer);
+    }
+  });
+
   swapPlayersButton.addEventListener(`click`, () => {
     let tempInputNameOne = playerOneName.value;
     playerOneName.value = playerTwoName.value;
@@ -227,6 +254,10 @@ const TicTacToe = (function () {
 
   const newPlayerVsAIGameButton = document.querySelector(`.new-ai-button`);
   newPlayerVsAIGameButton.addEventListener(`click`, newPlayerVsAIGame);
+
+  newTwoPlayerGameButton.addEventListener(`touchend`, newTwoPlayerGame);
+
+  newPlayerVsAIGameButton.addEventListener(`touchend`, newPlayerVsAIGame);
 
   function playerClick(element) {
     if (gameBoard.board[`${element.target.dataset.squareID}`]) return;
