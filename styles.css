@@ -4,23 +4,32 @@
   box-sizing: border-box;
 }
 body {
-  display: flex;
+  /* display: flex;
   align-items: center;
   flex-direction: column;
   gap: 1rem;
-  padding: 0.5rem;
+  padding: 0.5rem; */
+  padding: 1rem;
+}
+
+.big-container {
+  display: flex;
+  justify-content: center;
+  padding-top: 0.5rem;
 }
 .container {
   flex: 1;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
-  min-width: 400px;
+  max-width: 400px;
   min-height: 400px;
   gap: 1rem;
   background-color: black;
   user-select: none;
   align-self: center;
+  justify-content: center;
+  justify-items: center;
 }
 .square {
   background-color: white;
@@ -59,7 +68,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
   gap: 0.5rem;
   align-content: center;
 }
@@ -86,11 +94,16 @@ body {
   gap: 1rem;
   align-items: center;
   align-content: center;
+  justify-content: center;
 }
 .winner {
   font-weight: bold;
   color: green;
   font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
 }
 label {
   font-weight: bold;
@@ -118,11 +131,7 @@ span {
   .player-buttons {
     flex-direction: column;
   }
-  .container,
-  body {
-    gap: 0.5rem;
-  }
-  .player-buttons {
+  player-buttons {
     gap: 0.2rem;
   }
 }
